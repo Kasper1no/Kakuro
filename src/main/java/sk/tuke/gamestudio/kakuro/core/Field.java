@@ -1,4 +1,4 @@
-package org.example.kakuro.core;
+package sk.tuke.gamestudio.kakuro.core;
 
 import java.util.*;
 
@@ -6,6 +6,12 @@ public class Field {
     private final int rowsCount;
     private final int columnsCount;
     private final Tile[][] field;
+    public static final String GREEN = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
+    public static final String RED = "\u001B[31m";
+    public static final String PURPLE = "\u001B[35m";
+    public static final String RESET = "\u001B[0m";
+
 
     public Field(int rowsCount, int columnsCount) {
         this.rowsCount = rowsCount;
@@ -16,17 +22,17 @@ public class Field {
     }
 
     private void generateField() {
-        if (this.rowsCount <= 5) {
+        if (this.rowsCount < 5) {
             generateSmall();
         }
-//        else {
-//            generateBig();
-//        }
+        else {
+            generateHard();
+        }
     }
 
     public boolean setValue(int row, int column, int value) {
         if((row < 0 || row >= rowsCount) || (column < 0 || column >= columnsCount) || (value <= 0 || value >= 10)) return false;
-        if(!(field[row][column] instanceof ValueTile tile)) return false;
+        if(!(field[row][column] instanceof ValueTile tile) || tile.getCorrectValue() <= 0) return false;
         tile.setValue(value);
         return true;
     }
@@ -151,15 +157,6 @@ public class Field {
         return true;
     }
 
-    private void fillRowTile(SumTile tile, int x, int y, int count) {
-        ValueTile newTile;
-        for (int i = 0; i < count; i++) {
-            if (y + 1 < columnsCount && field[x][++y] instanceof ValueTile) {
-                newTile = (ValueTile) field[x][y];
-            }
-        }
-    }
-
     private void fillColumnTile(SumTile tile, int x, int y, int count) {
         boolean flag = true;
         List<List<Integer>> combinations = getPossibleSums(tile.getColSum(), count);
@@ -186,19 +183,16 @@ public class Field {
         }
     }
 
-    private void generateTiles(SumTile tile, int x, int y, int rowsCount, int colsCount) {
-        if (tile.getRowSum() > 0) {
-            fillRowTile(tile, x, y, rowsCount);
-        }
+    private void generateTiles(SumTile tile, int x, int y, int rowsCount) {
         if (tile.getColSum() > 0) {
-            fillColumnTile(tile, x, y, colsCount);
+            fillColumnTile(tile, x, y, rowsCount);
         }
     }
 
     private void generateSmall() {
-        field[0][0] = new ValueTile(0);
-        ValueTile tile = (ValueTile) field[0][0];
+        ValueTile tile = new ValueTile(0);
         tile.setValue(0);
+        field[0][0] = tile;
 
         List<Integer> previousSums = new ArrayList<>();
 
@@ -211,8 +205,50 @@ public class Field {
 
                     previousSums.add(colSum);
                     SumTile sumTile = new SumTile(rowSum, colSum);
-                    generateTiles(sumTile, row, column, rowsCount - 1, columnsCount - 1);
+                    generateTiles(sumTile, row, column, columnsCount - 1);
                     field[row][column] = sumTile;
+                }
+            }
+        }
+    }
+
+    public void generateHard() {
+        List<Integer> previousSums = new ArrayList<>();
+        int rowSum, colSum  = getRandomNumberForTiles(3, previousSums);
+        SumTile tile = new SumTile(0, colSum);
+
+        // Static Hard Level Generation
+        generateTiles(tile, 0, 4, 3);
+        field[0][4] = tile;
+        colSum  = getRandomNumberForTiles(3, previousSums);
+        tile = new SumTile(0, colSum);
+        generateTiles(tile, 0, 3, 3);
+        field[0][3] = tile;
+        colSum  = getRandomNumberForTiles(3, previousSums);
+        rowSum  = calcRowSum(1, 2);
+        generateTiles(tile, 1, 2, 3);
+        tile = new SumTile(rowSum, colSum);
+        field[1][2] = tile;
+        colSum  = getRandomNumberForTiles(3, previousSums);
+        tile = new SumTile(0, colSum);
+        generateTiles(tile, 1, 1, 3);
+        field[1][1] = tile;
+        rowSum  = calcRowSum(2, 0);
+        tile = new SumTile(rowSum, 0);
+        field[2][0] = tile;
+        rowSum = calcRowSum(3, 0);
+        tile = new SumTile(rowSum, 0);
+        field[3][0] = tile;
+        rowSum = calcRowSum(4, 0);
+        tile = new SumTile(rowSum, 0);
+        field[4][0] = tile;
+
+        for (int row = 0; row < rowsCount; row++) {
+            for (int column = 0; column < columnsCount; column++) {
+                if(!(field[row][column] instanceof ValueTile) && !(field[row][column] instanceof SumTile)){
+                    ValueTile newTile = new ValueTile(0);
+                    newTile.setValue(0);
+                    field[row][column] = newTile;
                 }
             }
         }
@@ -231,33 +267,41 @@ public class Field {
         if (x - 1 >= 0) upper = field[x - 1][y];
         if (y - 1 >= 0) left = field[x][y - 1];
         if (upper == null && left == null) {
-            list.get(startIndex).append("+--------+");
-            list.get(startIndex + 1).append("|");
-            list.get(startIndex + 2).append("|");
-            list.get(startIndex + 3).append("+--------+");
+            list.get(startIndex).append(GREEN + "+--------+" + RESET);
+            list.get(startIndex + 1).append(GREEN + "|" + RESET);
+            list.get(startIndex + 2).append(GREEN + "|" + RESET);
+            list.get(startIndex + 3).append(GREEN + "+--------+" + RESET);
         } else if (left == null) {
-            list.get(startIndex + 1).append("|");
-            list.get(startIndex + 2).append("|");
-            list.get(startIndex + 3).append("+--------+");
+            list.get(startIndex + 1).append(GREEN + "|" + RESET);
+            list.get(startIndex + 2).append(GREEN + "|" + RESET);
+            list.get(startIndex + 3).append(GREEN + "+--------+" + RESET);
         } else if (upper == null) {
-            list.get(startIndex).append("--------+");
-            list.get(startIndex + 3).append("--------+");
+            list.get(startIndex).append(GREEN + "--------+" + RESET);
+            list.get(startIndex + 3).append(GREEN + "--------+" + RESET);
         } else {
-            list.get(startIndex + 3).append("--------+");
+            list.get(startIndex + 3).append(GREEN + "--------+" + RESET);
         }
 
         if (tile instanceof ValueTile) {
-            Integer value = ((ValueTile) tile).getValue();
-            String valueString = value != null && value > 0 ? value + "" : " ";
-            list.get(startIndex + 1).append("    ").append(valueString).append("   |");
-            list.get(startIndex + 2).append("        |");
+            Integer correctValue = ((ValueTile) tile).getCorrectValue();
+            list.get(startIndex + 1).append(GREEN);
+            if (correctValue != null && correctValue > 0) {
+                Integer value = ((ValueTile) tile).getValue();
+                String valueString = value + "";
+                list.get(startIndex + 1).append("    ").append(YELLOW).append(valueString).append(RESET).append(GREEN + "   |" + RESET);
+                list.get(startIndex + 2).append(GREEN + "        |" + RESET);
+            } else {
+                list.get(startIndex + 1).append(GREEN + "########|" + RESET);
+                list.get(startIndex + 2).append(GREEN + "########|" + RESET);
+            }
+
         } else if (tile instanceof SumTile) {
             int valueCol = ((SumTile) tile).getColSum();
             int valueRow = ((SumTile) tile).getRowSum();
             String colSumStr = valueCol > 0 ? (valueCol + (valueCol < 10 ? " " : "")) : "  ";
             String rowSumStr = valueRow > 0 ? (valueRow + (valueRow < 10 ? " " : "")) : "  ";
-            list.get(startIndex + 1).append("  \\\\ ").append(rowSumStr).append(" |");
-            list.get(startIndex + 2).append(" ").append(colSumStr).append(" \\\\  |");
+            list.get(startIndex + 1).append(GREEN + "  \\\\ " + RESET).append(PURPLE).append(rowSumStr).append(RESET).append(GREEN + " |" + RESET);
+            list.get(startIndex + 2).append(" ").append(PURPLE).append(colSumStr).append(RESET).append(GREEN + " \\\\  |" + RESET);
         }
 
     }
@@ -266,26 +310,35 @@ public class Field {
         for (int i = 0; i < row; i++) {
             int startIndex = (4 * (i) - (i - 1)) - 1;
             String sym = String.valueOf(i);
-            if( i == 0 ){
-                list.get(startIndex).append("--------+");
-                sym = " ";
+            if (i == 0) {
+                list.get(startIndex).append(GREEN + "--------+" + RESET);
+                list.get(startIndex + 1).append(GREEN + "########|" + RESET);
+                list.get(startIndex + 2).append(GREEN + "########|" + RESET);
+                list.get(startIndex + 3).append(GREEN + "--------+" + RESET);
+            } else {
+                list.get(startIndex + 1).append("    ").append(RED).append(sym).append(RESET).append(GREEN + "   |" + RESET);
+                list.get(startIndex + 2).append(GREEN + "        |" + RESET);
+                list.get(startIndex + 3).append(GREEN + "--------+" + RESET);
             }
-            list.get(startIndex + 1).append("    ").append(sym).append("   |");
-            list.get(startIndex + 2).append("        |");
-            list.get(startIndex + 3).append("--------+");
         }
         int start = (4 * (row) - (row - 1)) - 1;
         for ( int i = 0; i < col + 1; i++){
             String sym = String.valueOf((char)(65 + i - 1));
             if( i == 0 ){
-                list.get(start+1).append("|");
-                list.get(start+2).append("|");
-                list.get(start+3).append("+");
+                list.get(start+1).append(GREEN + "|" + RESET);
+                list.get(start+2).append(GREEN + "|" + RESET);
+                list.get(start+3).append(GREEN + "+" + RESET);
             }
-            if(i == 0 || i == col) sym = " ";
-            list.get(start + 1).append("    ").append(sym).append("   |");
-            list.get(start + 2).append("        |");
-            list.get(start + 3).append("--------+");
+
+            if (i == 0 || i == col) {
+                list.get(start + 1).append(GREEN + "########|" + RESET);
+                list.get(start + 2).append(GREEN + "########|" + RESET);
+                list.get(start + 3).append(GREEN + "--------+" + RESET);
+            } else {
+                list.get(start + 1).append("    ").append(RED).append(sym).append(RESET).append(GREEN + "   |" + RESET);
+                list.get(start + 2).append(GREEN + "        |" + RESET);
+                list.get(start + 3).append(GREEN + "--------+" + RESET);
+            }
         }
     }
 
@@ -326,5 +379,18 @@ public class Field {
         }
     }
 
+    public int calcScore(int multiplier){
+        int totalScore = 0;
+        for (int i = 0; i < rowsCount; i++) {
+            for (int j = 0; j < columnsCount; j++) {
+                if(field[i][j] instanceof ValueTile tile && tile.getCorrectValue() != 0) {
+                    if(Objects.equals(tile.getValue(), tile.getCorrectValue())){
+                        totalScore += multiplier;
+                    }
+                }
+            }
+        }
+        return totalScore;
+    }
 
 }

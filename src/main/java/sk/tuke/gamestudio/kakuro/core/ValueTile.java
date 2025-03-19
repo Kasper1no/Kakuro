@@ -1,4 +1,4 @@
-package org.example.kakuro.core;
+package sk.tuke.gamestudio.kakuro.core;
 
 public class ValueTile extends Tile {
     private Integer curValue;

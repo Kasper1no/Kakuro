@@ -1,7 +1,4 @@
-package org.example.kakuro.core;
-
-import java.util.ArrayList;
-import java.util.List;
+package sk.tuke.gamestudio.kakuro.core;
 
 public class SumTile extends Tile {
     private final int rowSum;
