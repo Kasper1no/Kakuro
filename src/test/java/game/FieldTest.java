@@ -1,6 +1,7 @@
+package game;
 
-import org.example.kakuro.core.Field;
-import org.example.kakuro.core.ValueTile;
+import sk.tuke.gamestudio.kakuro.core.Field;
+import sk.tuke.gamestudio.kakuro.core.ValueTile;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
