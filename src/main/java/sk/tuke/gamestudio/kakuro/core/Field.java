@@ -40,13 +40,61 @@ public class Field {
     public boolean isSolved(){
         for (int i = 0; i < rowsCount; i++) {
             for (int j = 0; j < columnsCount; j++) {
-                if(field[i][j] instanceof ValueTile tile){
-                    if(tile.getCorrectValue() <= 0) continue;
-                    if(!Objects.equals(tile.getCorrectValue(), tile.getValue())) return false;
+                if(field[i][j] instanceof SumTile tile){
+                    if(!checkSumTile(tile, i, j))return false;
                 }
             }
         }
         return true;
+    }
+
+    private boolean checkSumTile(SumTile sumTile, int x, int y) {
+        List<Integer> values = new ArrayList<>();
+        int sum = 0;
+        boolean colSum = sumTile.getColSum() > 0;
+        boolean rowSum = sumTile.getRowSum() > 0;
+        boolean colResult = false;
+        boolean rowResult = false;
+        if(colSum){
+            while(x + 1 < columnsCount && field[++x][y] instanceof ValueTile tile){
+                if(!values.contains(tile.getValue())){
+                    values.add(tile.getValue());
+                }else{
+                    return false;
+                }
+            }
+            for (int value : values) {
+                sum += value;
+            }
+            if(sum == sumTile.getColSum()){
+                colResult = true;
+            }
+        }
+        if(rowSum){
+            values.clear();
+            sum = 0;
+            while (y + 1 < rowsCount && field[x][++y] instanceof ValueTile tile){
+                if(!values.contains(tile.getValue())){
+                    values.add(tile.getValue());
+                }else{
+                    return false;
+                }
+            }
+            for (int value : values) {
+                sum += value;
+            }
+            if(sum == sumTile.getRowSum()){
+                rowResult = true;
+            }
+        }
+        if(colSum && rowSum){
+            return colResult && rowResult;
+        }else if(colSum){
+            return colResult;
+        }else if(rowSum){
+            return rowResult;
+        }
+        return false;
     }
 
     public Tile getTile(int x, int y){
@@ -378,19 +426,4 @@ public class Field {
             }
         }
     }
-
-    public int calcScore(int multiplier){
-        int totalScore = 0;
-        for (int i = 0; i < rowsCount; i++) {
-            for (int j = 0; j < columnsCount; j++) {
-                if(field[i][j] instanceof ValueTile tile && tile.getCorrectValue() != 0) {
-                    if(Objects.equals(tile.getValue(), tile.getCorrectValue())){
-                        totalScore += multiplier;
-                    }
-                }
-            }
-        }
-        return totalScore;
-    }
-
 }

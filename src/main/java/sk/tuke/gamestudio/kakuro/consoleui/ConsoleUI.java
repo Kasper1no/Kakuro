@@ -4,7 +4,6 @@ import sk.tuke.gamestudio.kakuro.core.Field;
 import sk.tuke.gamestudio.kakuro.entity.Comment;
 import sk.tuke.gamestudio.kakuro.entity.Rating;
 import sk.tuke.gamestudio.kakuro.entity.Score;
-import org.example.kakuro.service.*;
 import sk.tuke.gamestudio.kakuro.service.*;
 
 import java.util.Date;
@@ -119,9 +118,10 @@ public class ConsoleUI {
     }
 
     private void endScreen(boolean win) {
-        int score = field.calcScore(multiplier);
+        int score = 0;
 
         if (win) {
+            score = 10 * multiplier;
             field.printField();
             System.out.println("🎉 Congratulations! You solved the Kakuro puzzle! 🎉");
         } else {
@@ -241,7 +241,7 @@ public class ConsoleUI {
 
     private void viewAverageRating(String game) {
         try {
-            int averageRating = ratingService.getAverageRating(game);
+            double averageRating = ratingService.getAverageRating(game);
             System.out.println(GREEN + "Average rating for " + game + ": " + RESET + CYAN + averageRating + RESET);
         } catch (RatingException e) {
             System.out.println(RED + "Error retrieving average rating: " + e.getMessage() + RESET);
@@ -304,8 +304,9 @@ public class ConsoleUI {
             System.out.println("3. View Comments");
             System.out.println("4. View Average Rating");
             System.out.println("5. View My Rating");
-            System.out.println("6. Reset Data (Admin)");
-            System.out.println("7. Exit Menu");
+            System.out.println("6. View Leaderboard");
+            System.out.println("7. Reset Data (Admin)");
+            System.out.println("8. Exit Menu");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -328,9 +329,12 @@ public class ConsoleUI {
                     viewMyRating(game);
                     break;
                 case 6:
-                    resetData();
+                    viewLeaderboard(game);
                     break;
                 case 7:
+                    resetData();
+                    break;
+                case 8:
                     System.out.println("Exiting the menu...");
                     return;
                 default:
