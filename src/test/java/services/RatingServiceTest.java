@@ -40,6 +40,10 @@ public class RatingServiceTest {
         ratingService.setRating(new Rating("Kakuro","Player",5, date));
 
         assertEquals(5, ratingService.getRating("Kakuro", "Player"));
-        assertEquals(5, ratingService.getAverageRating("Kakuro"));
+
+        ratingService.setRating(new Rating("Kakuro","Player1",3,date));
+
+        assertEquals(3, ratingService.getRating("Kakuro", "Player1"));
+        assertEquals(4, ratingService.getAverageRating("Kakuro"));
     }
 }
