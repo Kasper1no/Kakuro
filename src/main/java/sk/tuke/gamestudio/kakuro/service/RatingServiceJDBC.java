@@ -49,7 +49,7 @@ public class RatingServiceJDBC implements RatingService {
     }
 
     @Override
-    public int getAverageRating(String game) throws RatingException {
+    public double getAverageRating(String game) throws RatingException {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(AVG)
         ) {
@@ -60,7 +60,7 @@ public class RatingServiceJDBC implements RatingService {
                 if (rs.wasNull()) {
                     return 0;
                 }
-                return (int) Math.round(averageRating);
+                return averageRating;
             }
             return 0;
         } catch (SQLException e) {
