@@ -30,7 +30,9 @@ public class ScoreServiceJDBC implements ScoreService {
                     int points = rs.getInt(1);
                     try (PreparedStatement updateStatement = connection.prepareStatement(UPDATE)) {
                         updateStatement.setInt(1, score.getPoints() + points);
-                        updateStatement.setString(2, score.getPlayer());
+                        updateStatement.setTimestamp(2, new Timestamp(score.getPlayedOn().getTime()));
+                        updateStatement.setString(3, score.getGame());
+                        updateStatement.setString(4, score.getPlayer());
                         updateStatement.executeUpdate();
                     }
                 } else {
