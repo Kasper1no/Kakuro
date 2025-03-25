@@ -27,7 +27,7 @@ public class ConsoleUI {
     private Field field;
     private int multiplier;
 
-    public void startGame(){
+    public void startGame() {
         printWelcomeMessage();
         do {
             field = switch (setDifficulty()) {
@@ -50,17 +50,22 @@ public class ConsoleUI {
             };
 
             play();
-        }while (restartGame());
+        } while (restartGame());
     }
 
     private void play() {
         scanner.nextLine();
         while (!field.isSolved()) {
             printDelimiter();
+
+            System.out.println("🟣" + PURPLE + "Purple: Sum in row/column" + RESET);
+            System.out.println("🟡" + YELLOW + "Yellow: Value in the cell" + RESET);
+            System.out.println("🔴" + RED + "Red: Cell number in the grid" + RESET);
+
             field.printField();
             System.out.println("Enter your move:");
-            System.out.println("➡ Format: A1 5 or 1A 5");
-            System.out.println("➡ Type 'END' to quit or 'RESET' to restart.");
+            System.out.println("➡ Format: " + RED + "A1" + YELLOW + " 5" + RESET + " or " + RED + "1A" + YELLOW + " 5" + RESET);
+            System.out.println("➡ Type '" + GREEN + "END" + RESET + "' to quit or '" + GREEN + "RESET" + RESET + "' to restart.");
             System.out.print("\n📝 Your move: ");
 
             String input = scanner.nextLine().toUpperCase().trim();
@@ -75,7 +80,7 @@ public class ConsoleUI {
                 continue;
             }
             if (!handleInput(input)) {
-                System.out.println("❌ Invalid format! Use A1 5 or 1A 5.");
+                System.out.println("❌ Invalid format! Use " + RED + "A1" + YELLOW + " 5" + RESET + " or " + RED + "1A" + YELLOW + " 5" + RESET);
                 continue;
             }
 
@@ -141,14 +146,13 @@ public class ConsoleUI {
         System.out.println("1. Easy");
         System.out.println("2. Normal");
         System.out.println("3. Hard");
-        while(true) {
+        while (true) {
             System.out.print("Your choice: ");
             try {
                 int level = scanner.nextInt();
-                if(level < 1 || level > 3) {
+                if (level < 1 || level > 3) {
                     System.out.println("Please choose one of the following levels(1 - 3): ");
-                }
-                else{
+                } else {
                     return level;
                 }
             } catch (Exception ignored) {
@@ -276,7 +280,7 @@ public class ConsoleUI {
                 scoreService.reset();
                 System.out.println("Data has been reset!");
             } catch (CommentException | RatingException e) {
-                System.out.println(RED + "Error resetting data: " + e.getMessage()+ RESET);
+                System.out.println(RED + "Error resetting data: " + e.getMessage() + RESET);
             }
         } else {
             System.out.println(RED + "Incorrect password. Data not reset." + RESET);

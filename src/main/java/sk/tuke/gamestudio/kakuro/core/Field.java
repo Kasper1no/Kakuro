@@ -24,24 +24,24 @@ public class Field {
     private void generateField() {
         if (this.rowsCount < 5) {
             generateSmall();
-        }
-        else {
+        } else {
             generateHard();
         }
     }
 
     public boolean setValue(int row, int column, int value) {
-        if((row < 0 || row >= rowsCount) || (column < 0 || column >= columnsCount) || (value <= 0 || value >= 10)) return false;
-        if(!(field[row][column] instanceof ValueTile tile) || tile.getCorrectValue() <= 0) return false;
+        if ((row < 0 || row >= rowsCount) || (column < 0 || column >= columnsCount) || (value <= 0 || value >= 10))
+            return false;
+        if (!(field[row][column] instanceof ValueTile tile) || tile.getCorrectValue() <= 0) return false;
         tile.setValue(value);
         return true;
     }
 
-    public boolean isSolved(){
+    public boolean isSolved() {
         for (int i = 0; i < rowsCount; i++) {
             for (int j = 0; j < columnsCount; j++) {
-                if(field[i][j] instanceof SumTile tile){
-                    if(!checkSumTile(tile, i, j))return false;
+                if (field[i][j] instanceof SumTile tile) {
+                    if (!checkSumTile(tile, i, j)) return false;
                 }
             }
         }
@@ -55,50 +55,50 @@ public class Field {
         boolean rowSum = sumTile.getRowSum() > 0;
         boolean colResult = false;
         boolean rowResult = false;
-        if(colSum){
-            while(x + 1 < columnsCount && field[++x][y] instanceof ValueTile tile){
-                if(!values.contains(tile.getValue())){
+        if (colSum) {
+            while (x + 1 < columnsCount && field[++x][y] instanceof ValueTile tile) {
+                if (!values.contains(tile.getValue())) {
                     values.add(tile.getValue());
-                }else{
+                } else {
                     return false;
                 }
             }
             for (int value : values) {
                 sum += value;
             }
-            if(sum == sumTile.getColSum()){
+            if (sum == sumTile.getColSum()) {
                 colResult = true;
             }
         }
-        if(rowSum){
+        if (rowSum) {
             values.clear();
             sum = 0;
-            while (y + 1 < rowsCount && field[x][++y] instanceof ValueTile tile){
-                if(!values.contains(tile.getValue())){
+            while (y + 1 < rowsCount && field[x][++y] instanceof ValueTile tile) {
+                if (!values.contains(tile.getValue())) {
                     values.add(tile.getValue());
-                }else{
+                } else {
                     return false;
                 }
             }
             for (int value : values) {
                 sum += value;
             }
-            if(sum == sumTile.getRowSum()){
+            if (sum == sumTile.getRowSum()) {
                 rowResult = true;
             }
         }
-        if(colSum && rowSum){
+        if (colSum && rowSum) {
             return colResult && rowResult;
-        }else if(colSum){
+        } else if (colSum) {
             return colResult;
-        }else if(rowSum){
+        } else if (rowSum) {
             return rowResult;
         }
         return false;
     }
 
-    public Tile getTile(int x, int y){
-        if(x < 0 || x >= rowsCount && y < 0 || y >= columnsCount) return null;
+    public Tile getTile(int x, int y) {
+        if (x < 0 || x >= rowsCount && y < 0 || y >= columnsCount) return null;
         return field[x][y];
     }
 
@@ -167,9 +167,9 @@ public class Field {
             min += minNums.remove(0);
         }
         int random;
-        do{
+        do {
             random = new Random(System.currentTimeMillis()).nextInt(min, max);
-        }while (sums.contains(random));
+        } while (sums.contains(random));
         return random;
     }
 
@@ -177,7 +177,7 @@ public class Field {
         int sum = 0;
 
         while (true) {
-            if(y + 1 >= rowsCount) break;
+            if (y + 1 >= rowsCount) break;
             Tile tile = field[x][++y];
             if (tile instanceof ValueTile && ((ValueTile) tile).getValue() != null) {
                 sum += ((ValueTile) tile).getCorrectValue();
@@ -248,7 +248,7 @@ public class Field {
             for (int column = 0; column < columnsCount; column++) {
                 if (field[row][column] instanceof ValueTile) continue;
                 if (sumTileCanBePlaced(row, column)) {
-                    int colSum = row == 0 ? getRandomNumberForTiles(rowsCount - 1,previousSums) : 0;
+                    int colSum = row == 0 ? getRandomNumberForTiles(rowsCount - 1, previousSums) : 0;
                     int rowSum = column == 0 ? calcRowSum(row, column) : 0;
 
                     previousSums.add(colSum);
@@ -262,26 +262,26 @@ public class Field {
 
     public void generateHard() {
         List<Integer> previousSums = new ArrayList<>();
-        int rowSum, colSum  = getRandomNumberForTiles(3, previousSums);
+        int rowSum, colSum = getRandomNumberForTiles(3, previousSums);
         SumTile tile = new SumTile(0, colSum);
 
         // Static Hard Level Generation
         generateTiles(tile, 0, 4, 3);
         field[0][4] = tile;
-        colSum  = getRandomNumberForTiles(3, previousSums);
+        colSum = getRandomNumberForTiles(3, previousSums);
         tile = new SumTile(0, colSum);
         generateTiles(tile, 0, 3, 3);
         field[0][3] = tile;
-        colSum  = getRandomNumberForTiles(3, previousSums);
-        rowSum  = calcRowSum(1, 2);
+        colSum = getRandomNumberForTiles(3, previousSums);
+        rowSum = calcRowSum(1, 2);
         generateTiles(tile, 1, 2, 3);
         tile = new SumTile(rowSum, colSum);
         field[1][2] = tile;
-        colSum  = getRandomNumberForTiles(3, previousSums);
+        colSum = getRandomNumberForTiles(3, previousSums);
         tile = new SumTile(0, colSum);
         generateTiles(tile, 1, 1, 3);
         field[1][1] = tile;
-        rowSum  = calcRowSum(2, 0);
+        rowSum = calcRowSum(2, 0);
         tile = new SumTile(rowSum, 0);
         field[2][0] = tile;
         rowSum = calcRowSum(3, 0);
@@ -293,7 +293,7 @@ public class Field {
 
         for (int row = 0; row < rowsCount; row++) {
             for (int column = 0; column < columnsCount; column++) {
-                if(!(field[row][column] instanceof ValueTile) && !(field[row][column] instanceof SumTile)){
+                if (!(field[row][column] instanceof ValueTile) && !(field[row][column] instanceof SumTile)) {
                     ValueTile newTile = new ValueTile(0);
                     newTile.setValue(0);
                     field[row][column] = newTile;
@@ -303,7 +303,7 @@ public class Field {
     }
 
     private void prepareListString(List<StringBuilder> list) {
-        int count = (4 * (rowsCount+1) - (rowsCount - 1));
+        int count = (4 * (rowsCount + 1) - (rowsCount - 1));
         for (int i = 0; i < count; i++) {
             list.add(new StringBuilder());
         }
@@ -354,7 +354,7 @@ public class Field {
 
     }
 
-    private void setBorders(List<StringBuilder> list,int row, int col){
+    private void setBorders(List<StringBuilder> list, int row, int col) {
         for (int i = 0; i < row; i++) {
             int startIndex = (4 * (i) - (i - 1)) - 1;
             String sym = String.valueOf(i);
@@ -370,12 +370,12 @@ public class Field {
             }
         }
         int start = (4 * (row) - (row - 1)) - 1;
-        for ( int i = 0; i < col + 1; i++){
-            String sym = String.valueOf((char)(65 + i - 1));
-            if( i == 0 ){
-                list.get(start+1).append(GREEN + "|" + RESET);
-                list.get(start+2).append(GREEN + "|" + RESET);
-                list.get(start+3).append(GREEN + "+" + RESET);
+        for (int i = 0; i < col + 1; i++) {
+            String sym = String.valueOf((char) (65 + i - 1));
+            if (i == 0) {
+                list.get(start + 1).append(GREEN + "|" + RESET);
+                list.get(start + 2).append(GREEN + "|" + RESET);
+                list.get(start + 3).append(GREEN + "+" + RESET);
             }
 
             if (i == 0 || i == col) {
@@ -407,10 +407,10 @@ public class Field {
         }
     }
 
-    public void showSolution(){
+    public void showSolution() {
         for (int i = 0; i < rowsCount; i++) {
             for (int j = 0; j < columnsCount; j++) {
-                if(field[i][j] instanceof ValueTile tile) {
+                if (field[i][j] instanceof ValueTile tile) {
                     tile.setValue(tile.getCorrectValue());
                 }
             }
@@ -420,7 +420,7 @@ public class Field {
     public void reset() {
         for (int i = 0; i < rowsCount; i++) {
             for (int j = 0; j < columnsCount; j++) {
-                if(field[i][j] instanceof ValueTile tile) {
+                if (field[i][j] instanceof ValueTile tile) {
                     tile.setValue(0);
                 }
             }
