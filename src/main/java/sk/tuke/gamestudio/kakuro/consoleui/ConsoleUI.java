@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.kakuro.consoleui;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.kakuro.core.Field;
 import sk.tuke.gamestudio.kakuro.entity.Comment;
 import sk.tuke.gamestudio.kakuro.entity.Rating;
@@ -12,9 +13,17 @@ import java.util.Scanner;
 
 public class ConsoleUI {
     private final Scanner scanner = new Scanner(System.in);
-    private final ScoreServiceJDBC scoreService = new ScoreServiceJDBC();
-    private final CommentServiceJDBC commentService = new CommentServiceJDBC();
-    private final RatingServiceJDBC ratingService = new RatingServiceJDBC();
+
+//    private final ScoreServiceJDBC scoreService = new ScoreServiceJDBC();
+//    private final CommentServiceJDBC commentService = new CommentServiceJDBC();
+//    private final RatingServiceJDBC ratingService = new RatingServiceJDBC();
+
+    @Autowired
+    private RatingService ratingService;
+    @Autowired
+    private ScoreService scoreService;
+    @Autowired
+    private CommentService commentService;
 
     public static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
