@@ -1,9 +1,25 @@
 package sk.tuke.gamestudio.kakuro.entity;
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import java.util.Date;
 
+@Entity
+@NamedQuery(name = "Rating.getAverageRating",
+        query = "SELECT AVG(r.rating) FROM Rating r WHERE r.game = :game")
+@NamedQuery(name = "Rating.getRatingForPlayer",
+        query = "SELECT r.rating FROM Rating r WHERE r.game = :game AND r.player = :player")
+@NamedQuery( name = "Rating.resetRating",
+        query = "DELETE FROM Rating ")
 public class Rating {
+
+    @Id
+    @GeneratedValue
+    private int ident;
+
     private String game;
 
     private String player;
@@ -11,6 +27,8 @@ public class Rating {
     private int rating;
 
     private Date ratedOn;
+
+    public Rating() {}
 
     public Rating(String game, String player, int rating, Date ratedOn) {
         this.game = game;
