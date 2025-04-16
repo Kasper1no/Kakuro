@@ -1,0 +1,159 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: #f0f0f0;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+a:focus,
+a:active,
+a:hover {
+    text-decoration: none;
+    outline: none;
+    box-shadow: none;
+}
+
+body {
+    background: linear-gradient(145deg, #1e1e1e, #3a3a3a, #1e1e1e);
+    background-size: 500% 500%;
+    animation: gradientShift 40s ease-in-out infinite;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+@keyframes gradientShift {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.number {
+    position: absolute;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    color: white;
+    opacity: 0.3;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    user-select: none;
+    pointer-events: auto;
+}
+
+.number:hover {
+    transform: scale(1.5);
+    opacity: 1;
+}
+
+.fullscreen-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.inner-container {
+    width: 80%;
+}
+
+.main-block {
+    width: 100%;
+    max-width: 700px;
+    text-align: left;
+}
+
+.main-logo {
+    position: relative;
+    z-index: 10;
+}
+
+.main-logo a {
+    position: relative;
+    color: #f0f0f0 !important;
+    text-decoration: none;
+    font-size: 150px;
+    z-index: 10;
+}
+
+.main-logo {
+    transition: all 0.3s ease;
+}
+.main-logo:hover {
+    text-shadow: 0 0 15px #9d4edd;
+    transform: scale(1.05);
+}
+
+.main-menu {
+    margin-left: 20px;
+}
+
+
+.my-bg-red:hover {
+    border: 3px solid;
+    border-color: #ff6b6b !important;
+}
+
+.my-bg-red:hover span{
+    color: #ff6b6b !important;
+}
+
+.my-bg-blue:hover {
+    border: 3px solid;
+    border-color: #00c2cb !important;
+}
+
+.my-bg-blue:hover span{
+    color: #00c2cb !important;
+}
+
+.my-bg-pink:hover {
+    border: 3px solid;
+    border-color: #ff85f2 !important;
+}
+
+.my-bg-pink:hover span{
+    color: #ff85f2 !important;
+}
+
+.my-bg-yellow:hover {
+    border: 3px solid;
+    border-color: #f0a500 !important;
+}
+
+.my-bg-yellow:hover span{
+    color: #f0a500 !important;
+}
+
+.menu-btn {
+    width: 60%;
+    display: flex;
+    padding: 20px;
+    border-radius: 10px;
+    justify-content: start;
+    align-items: center;
+    text-decoration: none;
+    border: 3px solid transparent;
+    font-size: 50px;
+    opacity: 0.85;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.menu-btn-content {
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+    will-change: transform;
+}
+
+.menu-btn:hover .menu-btn-content {
+    transform: scale(1.05);
+    opacity: 1;
+}

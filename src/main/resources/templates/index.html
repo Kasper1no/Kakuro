@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+</head>
+<body>
+<div class="fullscreen-center">
+    <div class="inner-container">
+        <div class="main-block">
+            <h1 class="main-logo fw-bold mb-5"><a th:href="@{/}">KAKURO</a></h1>
+
+            <nav class="main-menu d-flex flex-column gap-3 fw-bold">
+                <a class="menu-btn my-bg-blue btn-lg text-start" th:href="@{/game}">
+                    <span class="menu-btn-content">Play</span>
+                </a>
+                <a class="menu-btn my-bg-pink btn-lg text-start" th:href="@{/rules}">
+                    <span class="menu-btn-content">Rules</span>
+                </a>
+                <a class="menu-btn my-bg-red btn-lg text-start" th:href="@{/leaderboard}">
+                    <span class="menu-btn-content">Leaderboard</span>
+                </a>
+                <a class="menu-btn my-bg-yellow btn-lg text-start" th:href="@{/review}">
+                    <span class="menu-btn-content">Reviews</span>
+                </a>
+            </nav>
+
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+</head>
+<body>
+
+<a th:href="@{/}" class="btn btn-outline-light btn-lg fs-4 position-absolute m-3 top-0 start-0 fw-bold z-3">
+    ← Main Menu
+</a>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="rules-block card p-4 shadow text-white bg-transparent border-white" style="width: 100%; max-width: 700px;">
+        <h2 class="text-center mb-4 fw-bold">Rules</h2>
+
+        <div class="accordion my-doc-accordion" id="kakuroRulesAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingObjective">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#objective"
+                            aria-expanded="true" aria-controls="objective">
+                        🎯 Objective
+                    </button>
+                </h2>
+                <div id="objective" class="accordion-collapse collapse show" aria-labelledby="headingObjective"
+                     data-bs-parent="#kakuroRulesAccordion">
+                    <div class="accordion-body">
+                        The goal of Kakuro is to fill all blank squares in the grid with digits from 1 to 9 so that the
+                        sum of the numbers in each entry matches the clue associated with it. No digit may be repeated
+                        within an entry.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingMove">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#move" aria-expanded="false" aria-controls="move">
+                        🧩 Making a Move
+                    </button>
+                </h2>
+                <div id="move" class="accordion-collapse collapse" aria-labelledby="headingMove"
+                     data-bs-parent="#kakuroRulesAccordion">
+                    <div class="accordion-body">
+                        Select a blank square and input a number (1-9). Make sure that the number does not repeat within
+                        the horizontal or vertical clue sum it belongs to.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingHints">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#hints" aria-expanded="false" aria-controls="hints">
+                        💡 Tips & Strategies
+                    </button>
+                </h2>
+                <div id="hints" class="accordion-collapse collapse" aria-labelledby="headingHints"
+                     data-bs-parent="#kakuroRulesAccordion">
+                    <div class="accordion-body">
+                        Use known combinations of numbers for sums. For example, the only way to sum 3 using two numbers
+                        is 1+2. Also, keep track of possible values per cell as you go.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEnd">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#end" aria-expanded="false" aria-controls="end">
+                        🏁 End of the Game
+                    </button>
+                </h2>
+                <div id="end" class="accordion-collapse collapse" aria-labelledby="headingEnd"
+                     data-bs-parent="#kakuroRulesAccordion">
+                    <div class="accordion-body">
+                        The game ends when all cells are filled correctly according to the clues. If every sum is
+                        matched and all rules are followed — you win!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a th:href="@{/}" class="btn btn-outline-light btn-lg fw-bold">Main Menu</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

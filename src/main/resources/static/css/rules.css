@@ -1,0 +1,28 @@
+.rules-block{
+    position: relative;
+    z-index: 10;
+    font-size: 2rem !important;
+    font-weight: bold;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: transparent;
+    color: #ffd700;
+}
+
+.accordion-item {
+    background-color: transparent;
+    border-color: white;
+}
+
+.my-doc-accordion .accordion-button,
+.my-doc-accordion .accordion-body {
+    font-size: 2rem;
+    font-weight: bold;
+    background-color: transparent !important;
+    color: white !important;
+}
+
+.my-doc-accordion .accordion-button::after {
+    filter: brightness(0) invert(1); /* робить стрілку білою */
+}
