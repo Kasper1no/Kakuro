@@ -1,0 +1,6 @@
+<div th:fragment="blockCaption(gradientStart, gradientEnd, captionText, imageSrc)"
+     class="underscore mb-4 d-flex justify-content-center align-items-center"
+     th:style="'--gradient-start: ' + ${gradientStart} + '; --gradient-end: ' + ${gradientEnd}">
+    <img class="caption-img" th:src="@{${imageSrc}}" th:alt="${captionText}"/>
+    <span class="caption-text" th:text="${captionText}">Caption</span>
+</div>

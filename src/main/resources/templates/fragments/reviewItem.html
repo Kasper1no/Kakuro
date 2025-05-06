@@ -1,0 +1,22 @@
+<div class="review-card" th:fragment="reviewCard(author, comment, rating, date, photo)">
+    <div class="photo">
+        <img th:src="${photo != null ? '/images/avatars/' + photo : '/images/avatars/girl.png'}" alt="Фото автора">
+    </div>
+    <div class="author">
+        <span th:text="${author}">Author</span>
+
+        <div class="rating" th:if="${rating > 0}">
+            <span th:each="i : ${#numbers.sequence(1, 5)}"
+                  th:text="${i <= rating} ? '★' : '☆'"
+                  th:classappend="${i <= rating} ? 'star filled' : 'star empty'"></span>
+        </div>
+    </div>
+    <div class="comment">
+        <div class="review">
+            <span th:text="${comment}"></span>
+        </div>
+    </div>
+    <div class="date">
+        <span th:text="${date}">May 2, 2024</span>
+    </div>
+</div>

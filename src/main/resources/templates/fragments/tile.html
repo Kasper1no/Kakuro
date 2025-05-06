@@ -1,0 +1,12 @@
+<div th:fragment="tile(tile)"
+     th:class="'tile ' + ((tile.getClass().simpleName == 'ValueTile' and tile.correctValue != 0) ? 'tile-value' : (tile.getClass().simpleName == 'SumTile' ? 'tile-sum' : 'tile-empty'))"
+>
+
+    <span th:if="${tile.getClass().getSimpleName() == 'SumTile'}" class="row"
+          th:text="${tile.rowSum != 0 ? tile.rowSum : ' '}"></span>
+    <span th:if="${tile.getClass().getSimpleName() == 'SumTile'}" class="col"
+          th:text="${tile.colSum != 0 ? tile.colSum : ' '}"></span>
+
+    <span th:if="${tile.getClass().getSimpleName() != 'SumTile'}" class="value"
+          th:text="${tile.value != 0 ? tile.value : ' '}"></span>
+</div>

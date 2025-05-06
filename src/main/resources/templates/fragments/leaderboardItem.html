@@ -1,0 +1,20 @@
+<div th:fragment="userRow(number, name, score, date, imageUrl)"
+     th:class="'user-row ' + (${number == 1} ? 'gold-row' : (${number == 2} ? 'silver-row' : (${number == 3} ? 'bronze-row' : '')))">
+
+    <div class="user-image">
+        <div th:if="${number == 1}" class="crown-icon">
+            <img src="/images/icons/crown.png" alt="Crown"/>
+        </div>
+        <img th:src="${imageUrl != null && !#strings.isEmpty(imageUrl) ? '/images/avatars/' + imageUrl : '/images/avatars/girl.png'}"
+             alt="User Photo"/>
+    </div>
+
+    <div class="user-info">
+        <div class="user-name" th:text="${name}">John Doe</div>
+        <div class="user-date" th:text="${'Last played: ' + date}">Apr 26, 2025</div>
+    </div>
+
+    <div class="user-info right">
+        <div class="user-score" th:text="${#numbers.formatInteger(score, 0, 'COMMA')}">900,000</div>
+    </div>
+</div>
