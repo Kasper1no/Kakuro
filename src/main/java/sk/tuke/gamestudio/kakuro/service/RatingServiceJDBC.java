@@ -8,11 +8,12 @@ public class RatingServiceJDBC implements RatingService {
     public static final String URL = "jdbc:postgresql://localhost/gamestudio";
     public static final String USER = "postgres";
     public static final String PASSWORD = "admin";
-    public static final String SELECT = "SELECT rating FROM rating WHERE game = ? AND player = ?";
+    public static final String SELECT = "SELECT rating FROM rating WHERE game = ? AND player_nickname = ?";
     public static final String AVG = "SELECT AVG(rating) FROM rating WHERE game = ?";
+    public static final String COUNT = "SELECT COUNT(rating) FROM rating WHERE game = ?";
     public static final String DELETE = "DELETE FROM rating";
-    public static final String UPDATE = "UPDATE rating SET rating = ?, ratedon = ? WHERE game = ? AND player = ?";
-    public static final String INSERT = "INSERT INTO rating (game, player, rating, ratedon) VALUES (?, ?, ?, ?)";
+    public static final String UPDATE = "UPDATE rating SET rating = ?, ratedon = ? WHERE game = ? AND player_nickname = ?";
+    public static final String INSERT = "INSERT INTO rating (game, player_nickname, rating, ratedon) VALUES (?, ?, ?, ?)";
 
 
     @Override
@@ -21,7 +22,7 @@ public class RatingServiceJDBC implements RatingService {
         ) {
             try (PreparedStatement selectStatement = connection.prepareStatement(SELECT)) {
                 selectStatement.setString(1, rating.getGame());
-                selectStatement.setString(2, rating.getPlayer());
+                selectStatement.setString(2, rating.getPlayer().getNickname());
                 ResultSet rs = selectStatement.executeQuery();
 
                 if (rs.next()) {
@@ -29,13 +30,13 @@ public class RatingServiceJDBC implements RatingService {
                         updateStatement.setInt(1, rating.getRating());
                         updateStatement.setTimestamp(2, new Timestamp(rating.getRatedOn().getTime()));
                         updateStatement.setString(3, rating.getGame());
-                        updateStatement.setString(4, rating.getPlayer());
+                        updateStatement.setString(4, rating.getPlayer().getNickname());
                         updateStatement.executeUpdate();
                     }
                 } else {
                     try (PreparedStatement insertStatement = connection.prepareStatement(INSERT)) {
                         insertStatement.setString(1, rating.getGame());
-                        insertStatement.setString(2, rating.getPlayer());
+                        insertStatement.setString(2, rating.getPlayer().getNickname());
                         insertStatement.setInt(3, rating.getRating());
                         insertStatement.setTimestamp(4, new Timestamp(rating.getRatedOn().getTime()));
                         insertStatement.executeUpdate();
@@ -47,6 +48,28 @@ public class RatingServiceJDBC implements RatingService {
             throw new RatingException("Problem setting rating", e);
         }
     }
+
+    @Override
+    public int getRatingCount(String game) throws RatingException {
+        try (
+                Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                PreparedStatement statement = connection.prepareStatement(COUNT)
+        ) {
+            statement.setString(1, game);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RatingException("Problem counting ratings for game", e);
+        }
+
+        return 0;
+    }
+
 
     @Override
     public double getAverageRating(String game) throws RatingException {

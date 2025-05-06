@@ -1,25 +1,26 @@
 package sk.tuke.gamestudio.kakuro.entity;
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @NamedQuery(name = "Comment.getCommentsByGame",
         query = "SELECT c FROM Comment c WHERE c.game = :game ORDER BY c.commentedOn DESC")
-@NamedQuery( name = "Comment.resetComments",
-        query = "DELETE FROM Comment ")
+@NamedQuery(name = "Comment.resetComments",
+        query = "DELETE FROM Comment")
+@NamedQuery(name = "Comment.getCommentByGameAndPlayer",
+        query = "SELECT c FROM Comment c WHERE c.game = :game AND c.player.nickname = :nickname")
 public class Comment {
+
     @Id
     @GeneratedValue
     private int ident;
 
     private String game;
 
-    private String player;
+    @ManyToOne
+    @JoinColumn(name = "player_nickname", referencedColumnName = "nickname", nullable = true)
+    private Player player;
 
     private String comment;
 
@@ -27,18 +28,29 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(String game, String player, String comment, Date commentedOn) {
+    public Comment(String game, Player player, String comment, Date commentedOn) {
         this.game = game;
         this.player = player;
         this.comment = comment;
         this.commentedOn = commentedOn;
     }
 
+    public Comment(String game, String nickname, String comment, Date commentedOn) {
+        this.game = game;
+        this.player = new Player(nickname, null, null);
+        this.comment = comment;
+        this.commentedOn = commentedOn;
+    }
+
+    public int getIdent() {
+        return ident;
+    }
+
     public String getGame() {
         return game;
     }
 
-    public String getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
@@ -54,7 +66,7 @@ public class Comment {
         this.game = game;
     }
 
-    public void setPlayer(String player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 

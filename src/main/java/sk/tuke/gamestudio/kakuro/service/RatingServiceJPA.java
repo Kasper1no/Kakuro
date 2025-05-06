@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.kakuro.service;
 
 import sk.tuke.gamestudio.kakuro.entity.Rating;
-import sk.tuke.gamestudio.kakuro.entity.Score;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -30,6 +29,17 @@ public class RatingServiceJPA implements RatingService {
             entityManager.merge(existingRating);
         } else {
             entityManager.persist(rating);
+        }
+    }
+
+    public int getRatingCount(String game) throws RatingException {
+        try {
+            Long count = (Long) entityManager.createQuery("SELECT COUNT(r) FROM Rating r WHERE r.game = :game")
+                    .setParameter("game", game)
+                    .getSingleResult();
+            return count.intValue();
+        } catch (NoResultException e) {
+            return 0;
         }
     }
 

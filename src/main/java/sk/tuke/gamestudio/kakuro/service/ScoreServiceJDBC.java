@@ -10,11 +10,11 @@ public class ScoreServiceJDBC implements ScoreService {
     public static final String URL = "jdbc:postgresql://localhost/gamestudio";
     public static final String USER = "postgres";
     public static final String PASSWORD = "admin";
-    public static final String SELECT = "SELECT game, player, points, playedOn FROM score WHERE game = ? ORDER BY points DESC LIMIT 10";
-    public static final String SELECT_POINTS = "SELECT points FROM score WHERE game = ? AND player = ?";
+    public static final String SELECT = "SELECT game, player_nickname, points, playedOn FROM score WHERE game = ? ORDER BY points DESC LIMIT 10";
+    public static final String SELECT_POINTS = "SELECT points FROM score WHERE game = ? AND player_nickname = ?";
     public static final String DELETE = "DELETE FROM score";
-    public static final String INSERT = "INSERT INTO score (game, player, points, playedOn) VALUES (?, ?, ?, ?)";
-    public static final String UPDATE = "UPDATE score SET points = ?, playedOn = ? WHERE game = ? AND player = ?";
+    public static final String INSERT = "INSERT INTO score (game, player_nickname, points, playedOn) VALUES (?, ?, ?, ?)";
+    public static final String UPDATE = "UPDATE score SET points = ?, playedOn = ? WHERE game = ? AND player_nickname = ?";
 
     @Override
     public void addScore(Score score) {
@@ -22,7 +22,7 @@ public class ScoreServiceJDBC implements ScoreService {
         ) {
             try (PreparedStatement selectStatement = connection.prepareStatement(SELECT_POINTS)) {
                 selectStatement.setString(1, score.getGame());
-                selectStatement.setString(2, score.getPlayer());
+                selectStatement.setString(2, score.getPlayer().getNickname());
 
                 ResultSet rs = selectStatement.executeQuery();
                 if (rs.next()) {
@@ -31,13 +31,13 @@ public class ScoreServiceJDBC implements ScoreService {
                         updateStatement.setInt(1, score.getPoints() + points);
                         updateStatement.setTimestamp(2, new Timestamp(score.getPlayedOn().getTime()));
                         updateStatement.setString(3, score.getGame());
-                        updateStatement.setString(4, score.getPlayer());
+                        updateStatement.setString(4, score.getPlayer().getNickname());
                         updateStatement.executeUpdate();
                     }
                 } else {
                     try (PreparedStatement insertStatement = connection.prepareStatement(INSERT)) {
                         insertStatement.setString(1, score.getGame());
-                        insertStatement.setString(2, score.getPlayer());
+                        insertStatement.setString(2, score.getPlayer().getNickname());
                         insertStatement.setInt(3, score.getPoints());
                         insertStatement.setTimestamp(4, new Timestamp(score.getPlayedOn().getTime()));
                         insertStatement.executeUpdate();

@@ -1,19 +1,17 @@
 package sk.tuke.gamestudio.kakuro.entity;
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @NamedQuery(name = "Rating.getAverageRating",
         query = "SELECT AVG(r.rating) FROM Rating r WHERE r.game = :game")
 @NamedQuery(name = "Rating.getRatingForPlayer",
-        query = "SELECT r.rating FROM Rating r WHERE r.game = :game AND r.player = :player")
-@NamedQuery( name = "Rating.resetRating",
-        query = "DELETE FROM Rating ")
+        query = "SELECT r.rating FROM Rating r WHERE r.game = :game AND r.player.nickname = :player")
+@NamedQuery(name = "Rating.resetRating",
+        query = "DELETE FROM Rating")
+@NamedQuery(name = "Rating.getRatingCount",
+    query = "SELECT COUNT(r.rating) FROM Rating r WHERE r.game = :game")
 public class Rating {
 
     @Id
@@ -22,7 +20,9 @@ public class Rating {
 
     private String game;
 
-    private String player;
+    @ManyToOne
+    @JoinColumn(name = "player_nickname", referencedColumnName = "nickname", nullable = true)
+    private Player player;
 
     private int rating;
 
@@ -31,6 +31,13 @@ public class Rating {
     public Rating() {}
 
     public Rating(String game, String player, int rating, Date ratedOn) {
+        this.game = game;
+        this.player = new Player(player, null, null);
+        this.ratedOn = ratedOn;
+        setRating(rating);
+    }
+
+    public Rating(String game, Player player, int rating, Date ratedOn) {
         this.game = game;
         this.player = player;
         this.ratedOn = ratedOn;
@@ -41,7 +48,7 @@ public class Rating {
         return game;
     }
 
-    public String getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
@@ -57,7 +64,7 @@ public class Rating {
         this.game = game;
     }
 
-    public void setPlayer(String player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 
@@ -72,3 +79,4 @@ public class Rating {
         this.ratedOn = ratedOn;
     }
 }
+

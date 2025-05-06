@@ -1,25 +1,25 @@
 package sk.tuke.gamestudio.kakuro.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@NamedQuery( name = "Score.getTopScores",
-        query = "SELECT s FROM Score s WHERE s.game=:game ORDER BY s.points DESC")
-@NamedQuery( name = "Score.resetScores",
+@NamedQuery(name = "Score.getTopScores",
+        query = "SELECT s FROM Score s WHERE s.game = :game ORDER BY s.points DESC")
+@NamedQuery(name = "Score.resetScores",
         query = "DELETE FROM Score")
 public class Score implements Serializable {
+
     @Id
     @GeneratedValue
     private int ident;
 
     private String game;
 
-    private String player;
+    @ManyToOne
+    @JoinColumn(name = "player_nickname", referencedColumnName = "nickname", nullable = true)
+    private Player player;
 
     private int points;
 
@@ -27,7 +27,14 @@ public class Score implements Serializable {
 
     public Score() {}
 
-    public Score(String game, String player, int points, Date playedOn) {
+    public Score(String game, String playerNickname, int points, Date playedOn) {
+        this.game = game;
+        this.player = new Player(playerNickname, null, null);
+        this.points = points;
+        this.playedOn = playedOn;
+    }
+
+    public Score(String game, Player player, int points, Date playedOn) {
         this.game = game;
         this.player = player;
         this.points = points;
@@ -42,11 +49,11 @@ public class Score implements Serializable {
         this.game = game;
     }
 
-    public String getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
-    public void setPlayer(String player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 
@@ -70,10 +77,9 @@ public class Score implements Serializable {
     public String toString() {
         return "Score{" +
                 "game='" + game + '\'' +
-                ", player='" + player + '\'' +
+                ", player=" + player.getNickname() +
                 ", points=" + points +
                 ", playedOn=" + playedOn +
                 '}';
     }
-
 }

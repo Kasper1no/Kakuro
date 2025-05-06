@@ -19,8 +19,15 @@ public class CommentServiceRest {
         return commentService.getComments(game);
     }
 
+    @GetMapping("/game/{game}/player/{nickname}")
+    public Comment getComment(@PathVariable String game ,@PathVariable String nickname) {
+        return commentService.getComment(game, nickname);
+    }
+
     @PostMapping
     public void addComment(@RequestBody Comment comment){
         commentService.addComment(comment);
     }
+
+
 }

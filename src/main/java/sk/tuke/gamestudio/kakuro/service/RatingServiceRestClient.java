@@ -17,6 +17,11 @@ public class RatingServiceRestClient implements RatingService{
     }
 
     @Override
+    public int getRatingCount(String game) throws RatingException {
+        return restTemplate.getForObject(url+"/game/"+game+"/count", Integer.class);
+    }
+
+    @Override
     public double getAverageRating(String game) throws RatingException {
         return restTemplate.getForObject(url+"/game/"+game+"/average", Double.class);
     }

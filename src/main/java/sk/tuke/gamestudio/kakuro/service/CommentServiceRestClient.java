@@ -23,6 +23,11 @@ public class CommentServiceRestClient implements CommentService {
     }
 
     @Override
+    public Comment getComment(String game, String nickname) throws CommentException {
+        return restTemplate.getForObject(url + "/game/" + game + "/player/" + nickname, Comment.class);
+    }
+
+    @Override
     public void reset() throws CommentException {
         throw new UnsupportedOperationException("Not supported via web service");
     }

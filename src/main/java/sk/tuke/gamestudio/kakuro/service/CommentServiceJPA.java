@@ -15,8 +15,23 @@ public class CommentServiceJPA implements CommentService {
 
     @Override
     public void addComment(Comment comment) throws CommentException {
-        entityManager.persist(comment);
+        Comment existingComment = entityManager.createQuery(
+                        "SELECT c FROM Comment c WHERE c.game = :game AND c.player.nickname = :nickname", Comment.class)
+                .setParameter("game", comment.getGame())
+                .setParameter("nickname", comment.getPlayer().getNickname())
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+
+        if (existingComment != null) {
+            existingComment.setComment(comment.getComment());
+            existingComment.setCommentedOn(comment.getCommentedOn());
+            entityManager.merge(existingComment);
+        } else {
+            entityManager.persist(comment);
+        }
     }
+
 
     @Override
     public List<Comment> getComments(String game) throws CommentException {
@@ -29,4 +44,15 @@ public class CommentServiceJPA implements CommentService {
     public void reset() throws CommentException {
         entityManager.createNamedQuery("Comment.resetComments").executeUpdate();
     }
+
+    @Override
+    public Comment getComment(String game, String nickname) throws CommentException {
+        return entityManager.createNamedQuery("Comment.getCommentByGameAndPlayer", Comment.class)
+                .setParameter("game", game)
+                .setParameter("nickname", nickname)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+    }
+
 }

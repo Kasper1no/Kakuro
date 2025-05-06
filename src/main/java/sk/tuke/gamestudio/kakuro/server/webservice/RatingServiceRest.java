@@ -24,6 +24,11 @@ public class RatingServiceRest {
         return ratingService.getRating(game, name);
     }
 
+    @GetMapping("/game/{game}/count")
+    public int getRatingCount(@PathVariable String game){
+        return ratingService.getRatingCount(game);
+    }
+
     @PostMapping
     public void addRating(@RequestBody Rating rating){
         ratingService.setRating(rating);
