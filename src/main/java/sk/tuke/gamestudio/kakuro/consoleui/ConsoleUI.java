@@ -242,7 +242,7 @@ public class ConsoleUI {
             } else {
                 System.out.println(GREEN + "Comments for " + game + ":" + RESET);
                 for (Comment comment : comments) {
-                    System.out.println(PURPLE + comment.getPlayer() + RESET + " said: " + YELLOW + "'" + comment.getComment() + "'" + RESET);
+                    System.out.println(PURPLE + comment.getPlayer().getNickname() + RESET + " said: " + YELLOW + "'" + comment.getComment() + "'" + RESET);
                     System.out.println("Commented on: " + comment.getCommentedOn());
                     System.out.println("----------------------------------");
                 }
@@ -271,7 +271,7 @@ public class ConsoleUI {
                 System.out.println("\nTop Scores:");
                 for (int i = 0; i < topScores.size(); i++) {
                     Score score = topScores.get(i);
-                    System.out.println(CYAN + (i + 1) + ". " + RESET + PURPLE + score.getPlayer() + RESET + " - " + YELLOW + score.getPoints() + " points" + RESET);
+                    System.out.println(CYAN + (i + 1) + ". " + RESET + PURPLE + score.getPlayer().getNickname() + RESET + " - " + YELLOW + score.getPoints() + " points" + RESET);
                 }
             }
         } catch (ScoreException e) {
