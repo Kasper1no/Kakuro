@@ -53,5 +53,4 @@ public class SpringClient {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
-
 }
