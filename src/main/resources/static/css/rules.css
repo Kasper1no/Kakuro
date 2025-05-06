@@ -1,28 +1,121 @@
-.rules-block{
-    position: relative;
-    z-index: 10;
-    font-size: 2rem !important;
-    font-weight: bold;
-}
-
-.accordion-button:not(.collapsed) {
-    background-color: transparent;
-    color: #ffd700;
+.rules-block {
+    width: 100%;
+    max-width: 700px;
 }
 
 .accordion-item {
-    background-color: transparent;
-    border-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: transparent !important;
+    /*border-color: white;*/
+}
+
+.my-doc-accordion .accordion-header {
+    width: 100%;
+    background-color: #222222 !important;
+    /*box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);*/
+}
+
+.my-doc-accordion > * {
+    border: none !important;
+}
+
+.accordion-item:hover .accordion-body {
+    /*box-shadow: inset 0 -4px 10px rgba(255, 255, 255, 0.5);*/
+
+}
+
+.accordion-button:hover, .accordion-button:focus {
+    border: none;
+    outline: none;
+    box-shadow: inset 0 0 0.1rem rgb(255, 255, 255);
+}
+
+.accordion-button:active .accordion-img {
+    animation: shake 1s ease-in-out;
+    transform: scale(1.1);
+}
+
+@keyframes shake {
+    0% {
+        transform: scale(1.1) translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.1) translateX(-5px) rotate(-20deg);
+    }
+    50% {
+        transform: scale(1.1) translateX(5px) rotate(20deg);
+    }
+    75% {
+        transform: scale(1.1) translateX(-5px) rotate(-20deg);
+    }
+    100% {
+        transform: scale(1) translateX(0) rotate(0deg);
+    }
 }
 
 .my-doc-accordion .accordion-button,
 .my-doc-accordion .accordion-body {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: bold;
     background-color: transparent !important;
-    color: white !important;
+    color: #ECE5F0 !important;
 }
 
-.my-doc-accordion .accordion-button::after {
-    filter: brightness(0) invert(1); /* робить стрілку білою */
+.my-doc-accordion .collapse, .my-doc-accordion .collapsing {
+    background-color: #3a3a3a !important;
+    width: 95%;
+    margin-bottom: 5px;
 }
+
+.my-doc-accordion .accordion-body {
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+}
+
+
+.my-doc-accordion .accordion-button::after {
+    filter: brightness(0) invert(1);
+}
+
+.accordion-img {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 15px;
+}
+
+@media (max-width: 768px) {
+    .rules-block {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .my-doc-accordion .accordion-button,
+    .my-doc-accordion .accordion-body {
+        font-size: 1.2rem;
+    }
+
+    .accordion-img {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 10px;
+    }
+
+    .my-doc-accordion .collapse, .my-doc-accordion .collapsing {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .accordion-button {
+        padding: 0.75rem 1rem;
+    }
+
+    .accordion-body {
+        padding: 0.75rem 1rem;
+    }
+}
+
+
+
+

@@ -1,5 +1,25 @@
-footer{
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
+    background-color: rgba(34, 34, 34, 0.85);
     bottom: 0;
     width: 100%;
+    opacity: 0.85;
+    z-index: 100;
+    padding: 15px;
+}
+
+.footer-text {
+    color: #ECE5F0;
+}
+
+.footer > * {
+    margin: 0 10px;
+}
+
+.footer-icon img {
+    width: 32px;
+    height: 32px;
 }

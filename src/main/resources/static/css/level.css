@@ -1,0 +1,8 @@
+.level-block {
+    z-index: 10;
+}
+
+.level-block .menu-btn {
+    width: 100%;
+    justify-content: center;
+}

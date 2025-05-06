@@ -1,0 +1,103 @@
+.leaderboard-block {
+    width: 100%;
+    max-width: 800px;
+}
+
+.leaderboard {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+    color: #ECE5F0;
+}
+
+.user-row:hover {
+    transform: scale(1.1);
+    transition: transform .7s ease;
+
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.5);
+
+}
+
+.user-row.gold-row {
+    transform: scale(1.15);
+    border: 2px solid gold;
+    margin-bottom: 5px;
+}
+
+.user-row.silver-row {
+    border: 2px solid silver;
+}
+
+.user-row.bronze-row {
+    border: 2px solid #cd7f32;
+}
+
+.user-image {
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+
+.user-image img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.user-info {
+    margin-left: 15px;
+    flex-grow: 1;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.user-score {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.user-date {
+    font-size: 10px;
+    color: #b3bfb8;
+}
+
+.crown-icon {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    top: -35px;
+    transform: translateX(-30%) translateY(2%) rotate(-30deg);
+    transition: transform 0.5s ease;
+    transform-origin: center bottom;
+}
+
+.gold-row:hover .crown-icon {
+    transform: translateX(0%) translateY(-2%) rotate(0deg);
+}
+
+.crown-icon img {
+    width: 32px;
+    height: 32px;
+}
+
+
