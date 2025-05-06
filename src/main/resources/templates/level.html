@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/layout :: head(false, 'Choose Difficulty')}">
+</head>
+<body>
+
+<div th:replace="~{fragments/backBtn :: backMenuBtn}"></div>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="level-block">
+        <nav class="main-menu d-flex flex-column gap-3 fw-bold">
+            <th:block th:replace="~{fragments/blockСaption :: blockCaption('#ECE5F0', '#00c2cb', 'Choose Difficulty', '/images/icons/difficulty_blue.png')}"></th:block>
+
+            <a class="menu-btn my-bg-blue btn-lg text-start" th:href="@{/kakuro/start(difficulty='easy')}">
+                <span class="menu-btn-content">Easy</span>
+            </a>
+            <a class="menu-btn my-bg-pink btn-lg text-start" th:href="@{/kakuro/start(difficulty='medium')}">
+                <span class="menu-btn-content">Medium</span>
+            </a>
+            <a class="menu-btn my-bg-red btn-lg text-start" th:href="@{/kakuro/start(difficulty='hard')}">
+                <span class="menu-btn-content">Hard</span>
+            </a>
+        </nav>
+    </div>
+</div>
+
+</body>
+</html>

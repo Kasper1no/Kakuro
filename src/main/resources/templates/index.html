@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout :: head">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(true, 'Main Page')}">
+    <th:block th:fragment="scripts">
+        <script src="/scripts/index.js"></script>
+        <script src="/scripts/backgroundMove.js"></script>
+    </th:block>
 </head>
 <body>
 <div class="fullscreen-center">
@@ -12,13 +16,13 @@
                 <a class="menu-btn my-bg-blue btn-lg text-start" th:href="@{/game}">
                     <span class="menu-btn-content">Play</span>
                 </a>
-                <a class="menu-btn my-bg-pink btn-lg text-start" th:href="@{/rules}">
+                <a class="menu-btn my-bg-yellow btn-lg text-start" th:href="@{/rules}">
                     <span class="menu-btn-content">Rules</span>
                 </a>
                 <a class="menu-btn my-bg-red btn-lg text-start" th:href="@{/leaderboard}">
                     <span class="menu-btn-content">Leaderboard</span>
                 </a>
-                <a class="menu-btn my-bg-yellow btn-lg text-start" th:href="@{/review}">
+                <a class="menu-btn my-bg-pink btn-lg text-start" th:href="@{/review}">
                     <span class="menu-btn-content">Reviews</span>
                 </a>
             </nav>
@@ -26,6 +30,44 @@
         </div>
     </div>
 </div>
+
+
+<div class="top-right-login">
+    <div class="unlogged d-none">
+        <a id="login" class="btn login-btn btn-outline-light btn-sm fw-bold px-4 py-2" href="/login">Login</a>
+        <div class="delimiter"></div>
+        <a id="register" class="btn register-btn btn-outline-light btn-sm fw-bold px-4 py-2"
+           href="/register">Register</a>
+    </div>
+    <div class="logged d-none position-relative">
+        <div class="d-flex align-items-end gap-2" id="userInfo">
+            <img id="userAvatar" src="" alt="avatar">
+            <div class="nick-container">
+                <span id="userNickname"></span>
+                <div class="down-icon"></div>
+            </div>
+        </div>
+        <div id="logoutDropdown" class="position-absolute end-0 text-white rounded d-none"
+             style="top: 100%; width: 110px;">
+            <button id="logoutBtn" class="menu-btn my-bg-red w-100">
+                <span class="menu-btn-content">Logout</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="overlay d-none" id="overlay">
+    <div class="modal-window">
+        <h2>Important</h2>
+        <p>To maintain your rating and enable commenting, please log in to your account.</p>
+        <div id="countdown">You can close this in 5 seconds...</div>
+        <button id="closeButton">Got it</button>
+    </div>
+</div>
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 
 

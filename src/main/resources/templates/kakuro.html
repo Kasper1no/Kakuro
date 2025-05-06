@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/layout :: head(true, ${difficulty} + ' Kakuro')}">
+    <th:block th:fragment="scripts">
+        <script src="/scripts/game.js"></script>
+    </th:block>
+</head>
+<body>
+<div th:replace="~{fragments/backBtn :: backMenuBtn}"></div>
+
+<div id="exit-confirm-modal" class="exit-modal hidden">
+    <div class="exit-modal-content">
+        <p>Game is not solved. Do you really want to quit? </p>
+        <div class="modal-buttons">
+            <button id="stay-btn" class="menu-btn my-bg-blue">
+                <span class="menu-btn-content">Stay</span>
+            </button>
+            <button id="exit-btn" class="menu-btn my-bg-red">
+                <span class="menu-btn-content">Resign & Exit</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="block">
+        <div class="game-header">
+            <th::block
+                    th:replace="~{fragments/blockСaption :: blockCaption('#ECE5F0', '#00c2cb', 'Kakuro', '/images/icons/puzzle_blue.png')}"></th::block>
+            <div class="sub-header">
+                <div class="difficulty">
+                    <span>Difficulty:</span>
+                    <span class="difficulty-value" th:text="${difficulty}"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <table class="game-field ">
+            <tbody id="gameTableBody">
+            </tbody>
+        </table>
+
+        <div class="game-footer">
+            <div class="game-timer">
+                <span class="timer-text">Time: </span>
+                <span class="timer-value">00:00</span>
+            </div>
+            <div class="buttons">
+                <button class="btn resign-btn">
+                    Resign
+                </button>
+                <button class="btn reset-btn">
+                    Reset
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

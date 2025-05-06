@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/layout :: head(true, 'Login')}">
+    <th:block th:fragment="scripts">
+        <script src="/scripts/login.js"></script>
+    </th:block>
+</head>
+<body>
+
+<div th:replace="~{fragments/backBtn :: backMenuBtn}"></div>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <form class="login-form bg-dark text-white p-4 rounded shadow" id="loginForm" style="width: 350px;">
+        <h3 class="text-center mb-4">Login</h3>
+
+        <div id="loginErrorContainer" class="alert alert-danger d-none"></div>
+
+        <div class="mb-3">
+            <label for="nickname" class="form-label">Nickname</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn register-btn btn-outline-light px-4">Login</button>
+        </div>
+
+        <div class="mt-3 text-center">
+            <span>Don't have an account?</span>
+            <a href="/register" class="text-info">Register here</a>
+        </div>
+    </form>
+</div>
+
+
+
+</body>
+</html>

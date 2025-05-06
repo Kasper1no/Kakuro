@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(false, 'Leaderboard')}">
+</head>
+<body>
+
+<div th:replace="~{fragments/backBtn :: backMenuBtn}"></div>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="block leaderboard-block card p-4 text-white">
+        <th:block th:replace="~{fragments/blockСaption :: blockCaption('#ECE5F0', '#ff686b', 'Leaderboard', '/images/icons/trophy_coral.png')}"></th:block>
+
+        <div class="leaderboard">
+            <div class="leaderboard-list">
+                <div th:each="entry, iterStat : ${scores}" th:if="${iterStat.index < 5}">
+                    <th:block th:replace="fragments/leaderboardItem :: userRow(${iterStat.index + 1}, ${entry.player.nickname}, ${entry.points}, ${entry.playedOnFormatted}, ${entry.player.avatar})" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

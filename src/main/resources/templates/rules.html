@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout :: head">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(false, 'Rules')}">
 </head>
 <body>
 
-<a th:href="@{/}" class="btn btn-outline-light btn-lg fs-4 position-absolute m-3 top-0 start-0 fw-bold z-3">
-    ← Main Menu
-</a>
+<div th:replace="~{fragments/backBtn :: backMenuBtn}"></div>
 
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="rules-block card p-4 shadow text-white bg-transparent border-white" style="width: 100%; max-width: 700px;">
-        <h2 class="text-center mb-4 fw-bold">Rules</h2>
+    <div class="block rules-block card p-4 text-white">
+
+        <th:block th:replace="~{fragments/blockСaption :: blockCaption('#ECE5F0', '#f0a500', 'Rules', '/images/icons/book_yellow.png')}"></th:block>
 
         <div class="accordion my-doc-accordion" id="kakuroRulesAccordion">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingObjective">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#objective"
                             aria-expanded="true" aria-controls="objective">
-                        🎯 Objective
+                        <img class="accordion-img" th:src="@{/images/icons/target.png}" alt="Objective"> Objective
                     </button>
                 </h2>
                 <div id="objective" class="accordion-collapse collapse show" aria-labelledby="headingObjective"
@@ -34,7 +33,7 @@
                 <h2 class="accordion-header" id="headingMove">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#move" aria-expanded="false" aria-controls="move">
-                        🧩 Making a Move
+                        <img class="accordion-img" th:src="@{/images/icons/chess.png}" alt="Move"> Making a Move
                     </button>
                 </h2>
                 <div id="move" class="accordion-collapse collapse" aria-labelledby="headingMove"
@@ -50,7 +49,7 @@
                 <h2 class="accordion-header" id="headingHints">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#hints" aria-expanded="false" aria-controls="hints">
-                        💡 Tips & Strategies
+                        <img class="accordion-img" th:src="@{/images/icons/idea.png}" alt="Tip"> Tips & Strategies
                     </button>
                 </h2>
                 <div id="hints" class="accordion-collapse collapse" aria-labelledby="headingHints"
@@ -66,7 +65,7 @@
                 <h2 class="accordion-header" id="headingEnd">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#end" aria-expanded="false" aria-controls="end">
-                        🏁 End of the Game
+                        <img class="accordion-img" th:src="@{/images/icons/flag.png}" alt="End"> End of the Game
                     </button>
                 </h2>
                 <div id="end" class="accordion-collapse collapse" aria-labelledby="headingEnd"
@@ -77,10 +76,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="text-center mt-4">
-            <a th:href="@{/}" class="btn btn-outline-light btn-lg fw-bold">Main Menu</a>
         </div>
     </div>
 </div>

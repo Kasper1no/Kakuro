@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(true, 'Reviews')}">
+    <th:block th:fragment="scripts">
+        <script src="/scripts/review.js"></script>
+    </th:block>
+</head>
+<body>
+
+<div th:replace="~{fragments/backBtn :: backMenuBtn}"></div>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="block review-block card p-4 text-white">
+        <th:block th:replace="~{fragments/blockСaption :: blockCaption('#ECE5F0', '#ff85f2', 'Game Reviews', '/images/icons/comment_pink.png')}"></th:block>
+
+        <div class="review-body">
+            <div class="average-rating mb-3">
+                <div class="rating">
+                    <span class="text">Average:</span>
+                    <span class="rate" th:text="${averageRating}">0</span>
+                    <div class="stars">
+                        <th:block th:each="entry : ${stars}">
+                        <span th:class="'star ' + ${entry.value}"
+                              th:text="${entry.value == 'filled' ? '★' : (entry.value == 'half-filled' ? '' : '☆')}"></span>
+                        </th:block>
+                    </div>
+                    <span class="rate" th:text="${'(' + count + ')'}">(0)</span>
+                </div>
+            </div>
+
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="500000">
+                <div class="carousel-inner">
+                    <th:block th:each="review, iterStat : ${reviews}">
+                        <div class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active'">
+                            <th:block th:replace="fragments/reviewItem :: reviewCard(${review.player.getNickname()}, ${review.comment}, ${review.rating}, ${review.date}, ${review.player.getAvatar()})"/>
+                        </div>
+                    </th:block>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Попередній</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Наступний</span>
+                </button>
+            </div>
+
+            <button id="toggle-review-btn" class="menu-btn my-bg-pink form-btn">
+                <span class="menu-btn-content">Write a review</span>
+            </button>
+
+            <div class="overlay hidden" id="overlay">
+                <div id="review-form" class="review-form-container">
+                    <button class="close-btn">✖</button>
+                    <form id="review-submit-form">
+                        <label for="comment" class="form-label">Your Comment:</label>
+                        <textarea id="comment" name="comment" class="form-textarea" rows="4" required></textarea>
+
+                        <label class="form-label">Your Rating:</label>
+                        <div class="stars" id="star-rating">
+                            <span data-value="1">&#9733;</span>
+                            <span data-value="2">&#9733;</span>
+                            <span data-value="3">&#9733;</span>
+                            <span data-value="4">&#9733;</span>
+                            <span data-value="5">&#9733;</span>
+                        </div>
+                        <input type="hidden" name="rating" id="rating" value="0">
+
+                        <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
+
+                        <button type="submit" class="menu-btn my-bg-red submit-btn form-btn ">
+                            <span class="menu-btn-content">Submit</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
