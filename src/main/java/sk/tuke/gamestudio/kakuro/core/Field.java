@@ -3,9 +3,9 @@ package sk.tuke.gamestudio.kakuro.core;
 import java.util.*;
 
 public class Field {
-    private final int rowsCount;
-    private final int columnsCount;
-    private final Tile[][] field;
+    public final int rowsCount;
+    public final int columnsCount;
+    public Tile[][] field;
     public static final String GREEN = "\u001B[32m";
     public static final String YELLOW = "\u001B[33m";
     public static final String RED = "\u001B[31m";
@@ -21,16 +21,55 @@ public class Field {
         generateField();
     }
 
+    public int getRowsCount() {
+        return rowsCount;
+    }
+
+    public int getColumnsCount() {
+        return columnsCount;
+    }
+
+    public Tile[][] getField() {
+        return field;
+    }
+
     private void generateField() {
-        if (this.rowsCount < 5) {
-            generateSmall();
-        } else {
-            generateHard();
+        int maxAttempts = 10;
+        int attempt = 0;
+        boolean success = false;
+
+        while (!success && attempt < maxAttempts) {
+            try {
+                clearField();
+                if (this.rowsCount < 5) {
+                    generateSmall();
+                } else {
+                    generateHard();
+                }
+                success = true;
+            } catch (IllegalStateException e) {
+                attempt++;
+                System.err.println("Спроба #" + attempt + " не вдалася: " + e.getMessage());
+            }
+        }
+
+        if (!success) {
+            System.err.println("Не вдалося згенерувати поле після " + maxAttempts + " спроб.");
+            this.field = null;
+        }
+    }
+
+
+    private void clearField() {
+        for (int row = 0; row < rowsCount; row++) {
+            for (int column = 0; column < columnsCount; column++) {
+                field[row][column] = null;
+            }
         }
     }
 
     public boolean setValue(int row, int column, int value) {
-        if ((row < 0 || row >= rowsCount) || (column < 0 || column >= columnsCount) || (value <= 0 || value >= 10))
+        if ((row < 0 || row >= rowsCount) || (column < 0 || column >= columnsCount) || (value < 0 || value >= 10))
             return false;
         if (!(field[row][column] instanceof ValueTile tile) || tile.getCorrectValue() <= 0) return false;
         tile.setValue(value);
@@ -166,11 +205,19 @@ public class Field {
             max += maxNums.remove(maxNums.size() - 1);
             min += minNums.remove(0);
         }
-        int random;
-        do {
-            random = new Random(System.currentTimeMillis()).nextInt(min, max);
-        } while (sums.contains(random));
-        return random;
+
+        List<Integer> possibleValues = new ArrayList<>();
+        for (int i = min; i < max; i++) {
+            if (!sums.contains(i)) {
+                possibleValues.add(i);
+            }
+        }
+
+        if (possibleValues.isEmpty()) {
+            throw new IllegalStateException("No available random numbers left for this tile configuration.");
+        }
+
+        return possibleValues.get(new Random().nextInt(possibleValues.size()));
     }
 
     private int calcRowSum(int x, int y) {
@@ -265,7 +312,6 @@ public class Field {
         int rowSum, colSum = getRandomNumberForTiles(3, previousSums);
         SumTile tile = new SumTile(0, colSum);
 
-        // Static Hard Level Generation
         generateTiles(tile, 0, 4, 3);
         field[0][4] = tile;
         colSum = getRandomNumberForTiles(3, previousSums);
@@ -300,6 +346,7 @@ public class Field {
                 }
             }
         }
+
     }
 
     private void prepareListString(List<StringBuilder> list) {
